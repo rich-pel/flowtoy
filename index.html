@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlowToy</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ── Top bar ─────────────────────────────────────────────────────────── -->
+  <div id="topbar">
+    <span id="topbar-brand">FLOWTOY</span>
+
+    <button id="start-btn" class="tb-btn tb-btn-cam">CAMERA</button>
+    <button id="audio-btn" class="tb-btn">AUDIO</button>
+
+    <div class="tb-sep"></div>
+
+    <button id="btn-new"   class="tb-btn">NEW</button>
+    <button id="btn-save"  class="tb-btn">SAVE</button>
+    <button id="btn-load"  class="tb-btn">LOAD</button>
+    <button id="btn-fit"   class="tb-btn">FIT</button>
+
+    <div class="tb-sep"></div>
+
+    <button id="btn-compile" class="tb-btn tb-btn-compile">⬡ COMPILE</button>
+    <button id="btn-prof" class="tb-btn">PROF OFF</button>
+
+    <div class="tb-sep"></div>
+
+    <div id="err-msg"></div>
+
+    <span id="fps-counter" class="tb-label">— FPS</span>
+  </div>
+
+  <!-- ── Main row ────────────────────────────────────────────────────────── -->
+  <div id="main-row">
+
+    <!-- Left: Node Palette -->
+    <div id="panel-left">
+      <div class="panel-hdr">NODE PALETTE</div>
+      <div id="palette-search-wrap">
+        <input id="palette-search" type="text" placeholder="search…" autocomplete="off" spellcheck="false">
+      </div>
+      <div id="palette-list"></div>
+    </div>
+
+    <!-- Left resize handle -->
+    <div class="v-resize" id="left-resize"></div>
+
+    <!-- Center: Node Graph -->
+    <div id="panel-mid">
+      <div id="graph-area">
+        <canvas id="graph-canvas"></canvas>
+      </div>
+    </div>
+
+    <!-- Offscreen WebGL canvas (pipeline rendering only, no on-screen preview pane) -->
+    <div id="gl-hidden" aria-hidden="true">
+      <canvas id="c"></canvas>
+    </div>
+
+    <!-- Right resize handle -->
+    <div class="v-resize" id="right-resize"></div>
+
+    <!-- Right: Inspector -->
+    <div id="panel-right">
+      <div class="panel-hdr" id="inspector-hdr">
+        <span id="inspector-title">INSPECTOR</span>
+      </div>
+
+      <div id="inspector-body">
+
+        <!-- Node name -->
+        <div class="insp-row">
+          <span class="insp-label">NAME</span>
+          <input id="node-name" type="text" class="insp-input" placeholder="node name" disabled>
+        </div>
+
+        <!-- Effect selector (effect nodes only) -->
+        <div class="insp-row" id="row-effect">
+          <span class="insp-label">EFFECT</span>
+          <select id="node-effect" class="insp-select" title="Effect" disabled>
+            <!-- populated dynamically from EFFECT_NAMES -->
+          </select>
+        </div>
+
+        <!-- Output thumbnail resolution (output nodes only) -->
+        <div id="row-output-res">
+          <div class="insp-row">
+            <span class="insp-label">THUMB</span>
+            <div class="res-inputs">
+              <input id="out-res-w" type="number" class="insp-input res-num" placeholder="W" min="1" max="7680">
+              <span class="res-x">×</span>
+              <input id="out-res-h" type="number" class="insp-input res-num" placeholder="H" min="1" max="4320">
+            </div>
+          </div>
+          <div class="insp-row res-presets">
+            <span class="insp-label"></span>
+            <div class="res-preset-btns">
+              <button class="res-preset" data-w="160" data-h="90">S</button>
+              <button class="res-preset" data-w="320" data-h="180">M</button>
+              <button class="res-preset" data-w="640" data-h="360">L</button>
+              <button class="res-preset" data-w="0"   data-h="0">DEF</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Source info (source nodes only) -->
+        <div class="insp-row" id="row-source-info">
+          <span class="insp-label">STAGE</span>
+          <span id="source-stage-label" class="insp-badge">—</span>
+        </div>
+
+        <!-- Port types (effect nodes only) -->
+        <div class="insp-row" id="row-ports">
+          <span class="insp-label">PORTS</span>
+          <div id="port-types-wrap"></div>
+        </div>
+
+        <!-- Parameter sliders (effect nodes with @param annotations) -->
+        <div id="row-params"></div>
+
+      </div>
+
+      <!-- Shader editor (effect nodes) -->
+      <textarea id="shader-editor" spellcheck="false"
+        placeholder="Select an effect node to edit its shader…"></textarea>
+
+      <div id="editor-actions">
+        <div id="editor-error"></div>
+        <div id="editor-btns">
+          <button id="reset-btn"   class="action-btn"       disabled>RESET</button>
+          <button id="save-fx-btn" class="action-btn"       disabled>SAVE AS…</button>
+          <button id="apply-btn"   class="action-btn apply" disabled>APPLY ▶</button>
+        </div>
+      </div>
+
+      <!-- Console -->
+      <div id="console-panel">
+        <div id="console-hdr">
+          <span class="console-title">CONSOLE</span>
+          <span id="console-err-badge"></span>
+          <button id="console-clear-btn" class="console-ctrl">CLR</button>
+          <button id="console-toggle-btn" class="console-ctrl">▾</button>
+        </div>
+        <div id="console-output"></div>
+      </div>
+
+    </div>
+
+  </div><!-- /main-row -->
+
+</div><!-- /app -->
+
+<!-- DOM context menu populated by nodegraph.js -->
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
